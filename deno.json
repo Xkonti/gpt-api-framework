@@ -1,6 +1,6 @@
 {
   "name": "@xkonti/gpt-api-framework",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "exports": "./mod.ts",
   "imports": {
     "@hono/hono": "jsr:@hono/hono@^4.4.0",
