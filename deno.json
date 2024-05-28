@@ -1,0 +1,10 @@
+{
+  "name": "@xkonti/gpt-api-framework",
+  "version": "0.0.1",
+  "exports": "./mod.ts",
+  "imports": {
+    "@hono/hono": "jsr:@hono/hono@^4.4.0",
+    "zod": "npm:zod@^3.0.0",
+    "zod-to-json-schema": "npm:zod-to-json-schema@^3.23.0"
+  }
+}
