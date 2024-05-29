@@ -3,12 +3,23 @@
   "packages": {
     "specifiers": {
       "jsr:@hono/hono@^4.4.0": "jsr:@hono/hono@4.4.0",
+      "jsr:@xkonti/gpt-api-framework@0.0.1": "jsr:@xkonti/gpt-api-framework@0.0.1",
+      "npm:zod": "npm:zod@3.23.8",
       "npm:zod-to-json-schema": "npm:zod-to-json-schema@3.23.0_zod@3.23.8",
+      "npm:zod-to-json-schema@^3.23.0": "npm:zod-to-json-schema@3.23.0_zod@3.23.8",
       "npm:zod@^3.0.0": "npm:zod@3.23.8"
     },
     "jsr": {
       "@hono/hono@4.4.0": {
         "integrity": "3a720bde9692549ecef9117b2069b318e9e976a8af7588d9d8f3051b81d95b8d"
+      },
+      "@xkonti/gpt-api-framework@0.0.1": {
+        "integrity": "89378d307a39672ac000c5d665c7a1f2764fe23b3ee0868e9b8bf22c14e8aac1",
+        "dependencies": [
+          "jsr:@hono/hono@^4.4.0",
+          "npm:zod-to-json-schema@^3.23.0",
+          "npm:zod@^3.0.0"
+        ]
       }
     },
     "npm": {
@@ -24,11 +35,17 @@
       }
     }
   },
+  "redirects": {
+    "https://esm.town/v/std/API_URL": "https://esm.town/v/std/API_URL?v=5",
+    "https://esm.town/v/std/ValTownBlobError": "https://esm.town/v/std/ValTownBlobError?v=2",
+    "https://esm.town/v/std/ValTownBlobNotFoundError": "https://esm.town/v/std/ValTownBlobNotFoundError?v=2",
+    "https://esm.town/v/std/blob": "https://esm.town/v/std/blob?v=12"
+  },
   "remote": {},
   "workspace": {
     "dependencies": [
       "jsr:@hono/hono@^4.4.0",
-      "npm:zod-to-json-schema",
+      "npm:zod-to-json-schema@^3.23.0",
       "npm:zod@^3.0.0"
     ]
   }

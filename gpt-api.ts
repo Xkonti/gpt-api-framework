@@ -1,4 +1,5 @@
 import type { Context } from "@hono/hono";
+import type { StatusCode } from "jsr:@hono/hono@^4.4.0/utils/http-status";
 import type { z } from "zod";
 
 import { Hono } from "@hono/hono";
@@ -12,8 +13,11 @@ import type {
 } from "./endpoint-definitions.ts";
 
 import { getOpenApiSpec } from "./schema-builder.ts";
-import { StatusCode } from "jsr:@hono/hono@^4.4.0/utils/http-status";
 
+/**
+ * A class representing a GPT API. It provides methods for registering
+ * endpoints and serving the API.
+ */
 export class GptApi {
     private app = new Hono();
     private info: ApiInfo;
@@ -49,10 +53,15 @@ export class GptApi {
                 }
             });
         }
+
+        this.app.get("/", (ctx) => {
+            return ctx.text(`OpenAPI spec: ${this.info.url}/gpt/schema\nPrivacy policy: ${this.info.url}/privacypolicy\n`);
+        });
     }
 
     /**
-     * Register endpoint that accepts json input and returns only a status code.
+     * Register an endpoint that accepts JSON input and returns
+     * only a status code.
      * @param endpointDef Definition of the endpoint.
      * @param handler Function that handles the request.
      */
@@ -83,7 +92,10 @@ export class GptApi {
     }
 
     /**
-     * Register endpoint that ignores all inputs and returns a specific JSON response.
+     * Register an endpoint that ignores all inputs and
+     * returns a specific JSON response.
+     * @param endpointDef Definition of the endpoint.
+     * @param handler Function that handles the request.
      */
     nothingToJson<TResponseSchema extends z.Schema>(
         endpointDef: OutEndpointDefinition<TResponseSchema>,
@@ -110,7 +122,10 @@ export class GptApi {
     }
 
     /**
-     * Register endpoint that accepts a JSON DTO and returns a specific JSON response.
+     * Register an endpoint that accepts a JSON request and
+     * returns a specific JSON response.
+     * @param endpointDef Definition of the endpoint.
+     * @param handler Function that handles the request.
      */
     jsonToJson<TRequestSchema extends z.Schema, TResponseSchema extends z.Schema>(
         endpointDef: InOutEndpointDefinition<TRequestSchema, TResponseSchema>,
@@ -143,7 +158,11 @@ export class GptApi {
         this.registerHandler(eDef, handlerWrapper);
     }
 
-    // Registers a handler for a verb + path combo.
+    /**
+     * Regusters a handler for a verb + path combo.
+     * @param endpointDef Definition of the endpoint.
+     * @param handler Function that handles the request.
+     */
     private registerHandler(
         endpointDef: EndpointDefinition,
         handler: (ctx: Context) => Response | Promise<Response>,
@@ -174,14 +193,25 @@ export class GptApi {
     }
 
     /**
-     * Usage: `export default gptApi.serve();`
+     * Returns a function that can be used to serve the API.
+     * 
+     * @example ValTown usage:
+     * ```ts
+     * export default gptApi.serve();
+     * ```
+     * 
+     * @example Deno usage:
+     * ```
+     * const { fetch } = gptApi.serve();
+     * export default { fetch };
+     * ```
      */
     serve(): typeof Hono.prototype.fetch {
         return this.app.fetch;
     }
 
     /**
-     * Extract API key from Bearer Auth header.
+     * Extracts API key from Bearer Auth header.
      */
     private extractApiKey(ctx: Context): string | null {
         const authHeader = ctx.req.header("Authorization");
